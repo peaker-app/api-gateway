@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{EEDB267C-91A2-4B49-AC61-E13B3640FA3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEDB267C-91A2-4B49-AC61-E13B3640FA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEDB267C-91A2-4B49-AC61-E13B3640FA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEDB267C-91A2-4B49-AC61-E13B3640FA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEDB267C-91A2-4B49-AC61-E13B3640FA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
