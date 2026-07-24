@@ -31,6 +31,8 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/api/auth/swagger/v1/swagger.json", "auth-service");
         options.SwaggerEndpoint("/api/account/swagger/v1/swagger.json", "account-service");
+        options.SwaggerEndpoint("/api/peak/swagger/v1/swagger.json", "peak-service");
+        options.SwaggerEndpoint("/api/ascent/swagger/v1/swagger.json", "ascent-service");
         options.RoutePrefix = "swagger";
     });
 }
