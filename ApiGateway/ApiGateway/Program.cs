@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/api/auth/swagger/v1/swagger.json", "auth-service");
+        options.SwaggerEndpoint("/api/account/swagger/v1/swagger.json", "account-service");
         options.RoutePrefix = "swagger";
     });
 }
