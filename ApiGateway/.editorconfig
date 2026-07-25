@@ -60,3 +60,9 @@ dotnet_diagnostic.CA1873.severity = none
 # CA1724: la clase DependencyInjection es la convención del composition root (DEVELOPMENT §3); el
 # choque nominal con el namespace Microsoft.Extensions.DependencyInjection es inocuo.
 dotnet_diagnostic.CA1724.severity = none
+
+[tests/**.cs]
+# CA1707: los nombres de test siguen el patrón Metodo_Escenario_Resultado con guiones bajos.
+dotnet_diagnostic.CA1707.severity = none
+# CA2234: en los tests se usan rutas string legibles con HttpClient.
+dotnet_diagnostic.CA2234.severity = none
