@@ -15,10 +15,13 @@ builder.Services.AddSerilog((services, configuration) => configuration
 
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 builder.Services.AddCommonJwtAuthentication(builder.Configuration);
+builder.Services.AddGatewayForwardedHeaders(builder.Configuration);
 builder.Services.AddGatewayRateLimiting();
 builder.Services.AddHealthChecks();
 
 WebApplication app = builder.Build();
+
+app.UseGatewayForwardedHeaders();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
