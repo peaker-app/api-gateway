@@ -15,6 +15,7 @@ builder.Services.AddSerilog((services, configuration) => configuration
 
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 builder.Services.AddCommonJwtAuthentication(builder.Configuration);
+builder.Services.AddGatewayAuthorization();
 builder.Services.AddGatewayForwardedHeaders(builder.Configuration);
 builder.Services.AddGatewayRateLimiting();
 builder.Services.AddHealthChecks();
@@ -37,6 +38,7 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/api/peak/swagger/v1/swagger.json", "peak-service");
         options.SwaggerEndpoint("/api/ascent/swagger/v1/swagger.json", "ascent-service");
         options.RoutePrefix = "swagger";
+        options.EnablePersistAuthorization();
     });
 }
 
@@ -48,5 +50,3 @@ app.MapCommonHealthChecks();
 app.MapReverseProxy();
 
 await app.RunAsync();
-
-public partial class Program;
