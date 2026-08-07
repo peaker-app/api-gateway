@@ -16,6 +16,7 @@ builder.Services.AddSerilog((services, configuration) => configuration
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 builder.Services.AddCommonJwtAuthentication(builder.Configuration);
 builder.Services.AddGatewayAuthorization();
+builder.Services.AddGatewayCors(builder.Configuration);
 builder.Services.AddGatewayForwardedHeaders(builder.Configuration);
 builder.Services.AddGatewayRateLimiting();
 builder.Services.AddHealthChecks();
@@ -28,6 +29,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseSerilogRequestLogging();
 app.UseSecurityHeaders();
+app.UseGatewayCors();
 
 if (app.Environment.IsDevelopment())
 {
