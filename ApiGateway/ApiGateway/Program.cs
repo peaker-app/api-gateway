@@ -1,4 +1,5 @@
 using ApiGateway.Extensions;
+using ApiGateway.Middlewares;
 using Common.API.Health;
 using Common.API.Middlewares;
 using Common.API.Security;
@@ -15,7 +16,6 @@ builder.Services.AddSerilog((services, configuration) => configuration
 
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 builder.Services.AddCommonJwtAuthentication(builder.Configuration);
-builder.Services.AddGatewayAuthorization();
 builder.Services.AddGatewayCors(builder.Configuration);
 builder.Services.AddGatewayForwardedHeaders(builder.Configuration);
 builder.Services.AddGatewayRateLimiting();
@@ -44,8 +44,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseRateLimiter();
 app.UseAuthentication();
+app.UseMiddleware<AuthIdentifierMiddleware>();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapCommonHealthChecks();
