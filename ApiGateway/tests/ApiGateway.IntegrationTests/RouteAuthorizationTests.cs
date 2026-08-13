@@ -101,6 +101,16 @@ public sealed class RouteAuthorizationTests : IDisposable
         response.StatusCode.Should().NotBe(HttpStatusCode.Forbidden);
     }
 
+    [Theory]
+    [MemberData(nameof(ProtectedRoutes))]
+    public async Task ProtectedRoute_WithATokenForAnotherService_IsRejectedAtTheGateway(string method, string path)
+    {
+        using HttpResponseMessage response = await SendSignedAsync(
+            method, path, _tokenSigning.CreateAccessTokenForAudience("peaker-account"));
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
     public void Dispose()
     {
         _signedFactory.Dispose();

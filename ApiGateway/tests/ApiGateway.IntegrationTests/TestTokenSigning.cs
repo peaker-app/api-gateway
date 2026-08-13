@@ -8,7 +8,7 @@ namespace ApiGateway.IntegrationTests;
 internal sealed class TestTokenSigning : IDisposable
 {
     public const string Issuer = "peaker-auth";
-    public const string Audience = "peaker-api";
+    public const string Audience = "peaker-gateway";
 
     private static readonly JsonWebTokenHandler TokenHandler = new() { SetDefaultTimesOnTokenCreation = false };
 
@@ -16,14 +16,18 @@ internal sealed class TestTokenSigning : IDisposable
 
     public SecurityKey PublicKey => new RsaSecurityKey(_rsa.ExportParameters(includePrivateParameters: false));
 
-    public string CreateAccessToken(params string[] roles)
+    public string CreateAccessToken(params string[] roles) => CreateToken(Audience, roles);
+
+    public string CreateAccessTokenForAudience(string audience) => CreateToken(audience, []);
+
+    private string CreateToken(string audience, string[] roles)
     {
         DateTime now = DateTime.UtcNow;
 
         SecurityTokenDescriptor descriptor = new()
         {
             Issuer = Issuer,
-            Audience = Audience,
+            Audience = audience,
             IssuedAt = now,
             NotBefore = now,
             Expires = now.AddMinutes(15),

@@ -15,6 +15,6 @@ internal sealed class TestJwtBearerConfiguration(TestTokenSigning tokenSigning)
         options.ConfigurationManager = null;
         options.TokenValidationParameters.IssuerSigningKey = tokenSigning.PublicKey;
         options.TokenValidationParameters.ValidIssuer = TestTokenSigning.Issuer;
-        options.TokenValidationParameters.ValidAudience = TestTokenSigning.Audience;
+        options.TokenValidationParameters.ValidAudiences = [TestTokenSigning.Audience];
     }
 }
