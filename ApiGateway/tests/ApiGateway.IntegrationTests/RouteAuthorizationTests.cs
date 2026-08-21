@@ -33,6 +33,7 @@ public sealed class RouteAuthorizationTests : IDisposable
             { "GET", "/api/profiles/me" },
             { "PUT", "/api/profiles/me/slug" },
             { "POST", "/api/auth/logout" },
+            { "POST", "/api/auth/logout/all" },
             { "DELETE", "/api/auth/me" },
             { "POST", $"/api/admin/users/{SampleId}/unlock" },
             { "POST", $"/api/admin/users/{SampleId}/roles" },
