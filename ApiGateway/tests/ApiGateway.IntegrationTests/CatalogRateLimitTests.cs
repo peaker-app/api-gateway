@@ -14,7 +14,7 @@ public sealed class CatalogRateLimitTests : IDisposable
 {
     private const int CatalogPermitLimit = 20;
 
-    private readonly WebApplicationFactory<Program> _factory = new();
+    private readonly IsolatedGateway _factory = new();
 
     [Fact]
     public async Task Nearby_BeyondItsOwnLimit_IsRejectedBeforeTheGlobalOne()

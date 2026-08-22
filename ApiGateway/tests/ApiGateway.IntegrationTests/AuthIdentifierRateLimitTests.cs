@@ -17,7 +17,7 @@ public sealed class AuthIdentifierRateLimitTests : IDisposable
 {
     private const int AuthPermitLimit = 5;
 
-    private readonly TrustingGateway _gateway = new();
+    private readonly IsolatedGateway _gateway = IsolatedGateway.TrustingLoopbackProxies();
 
     [Fact]
     public async Task Login_ExhaustedForOneIdentifier_StillAllowsAnother()
@@ -113,16 +113,5 @@ public sealed class AuthIdentifierRateLimitTests : IDisposable
         request.Headers.TryAddWithoutValidation("X-Forwarded-For", forwardedFor);
 
         return await client.SendAsync(request);
-    }
-
-    private sealed class TrustingGateway : WebApplicationFactory<Program>
-    {
-        protected override void ConfigureWebHost(IWebHostBuilder builder) =>
-            builder.ConfigureAppConfiguration(configuration =>
-                configuration.AddInMemoryCollection(
-                    new Dictionary<string, string?>
-                    {
-                        ["ForwardedHeaders:KnownNetworks:0"] = "127.0.0.0/8",
-                    }));
     }
 }

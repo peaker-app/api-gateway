@@ -21,8 +21,8 @@ public sealed class ForwardedForRateLimitTests : IDisposable
 {
     private const int AuthPermitLimit = 5;
 
-    private readonly TrustingGateway _trusting = new();
-    private readonly DefaultGateway _default = new();
+    private readonly IsolatedGateway _trusting = IsolatedGateway.TrustingLoopbackProxies();
+    private readonly IsolatedGateway _default = new();
 
     [Fact]
     public async Task Login_WithTrustedProxy_PartitionsEachForwardedAddressSeparately()
@@ -63,19 +63,6 @@ public sealed class ForwardedForRateLimitTests : IDisposable
         _trusting.Dispose();
         _default.Dispose();
     }
-
-    private sealed class TrustingGateway : WebApplicationFactory<Program>
-    {
-        protected override void ConfigureWebHost(IWebHostBuilder builder) =>
-            builder.ConfigureAppConfiguration(configuration =>
-                configuration.AddInMemoryCollection(
-                    new Dictionary<string, string?>
-                    {
-                        ["ForwardedHeaders:KnownNetworks:0"] = "127.0.0.0/8",
-                    }));
-    }
-
-    private sealed class DefaultGateway : WebApplicationFactory<Program>;
 
     private static async Task<HttpResponseMessage> PostLoginAsync(
         HttpClient client,
