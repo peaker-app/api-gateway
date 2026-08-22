@@ -9,15 +9,18 @@ namespace ApiGateway.Extensions;
 internal static class RateLimitingExtensions
 {
     public const string AuthPolicyName = "auth";
+    public const string RegisterPolicyName = "register";
     public const string CatalogPolicyName = "catalog";
 
     private const int GlobalPermitLimit = 100;
     private const int AuthPermitLimit = 5;
+    private const int RegisterPermitLimit = 10;
     private const int CatalogPermitLimit = 20;
     private const string SubjectClaim = "sub";
     private const string UnknownClient = "unknown";
 
     private static readonly TimeSpan Window = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan RegisterWindow = TimeSpan.FromMinutes(10);
 
     public static IServiceCollection AddGatewayRateLimiting(this IServiceCollection services) =>
         services.AddRateLimiter(options =>
@@ -33,14 +36,26 @@ internal static class RateLimitingExtensions
                 context => CreatePartition(ResolveAuthKey(context), AuthPermitLimit));
 
             options.AddPolicy(
+                RegisterPolicyName,
+                context => CreatePartition(
+                    ResolveClientKey(context), RegisterPermitLimit, RegisterWindow));
+
+            options.AddPolicy(
                 CatalogPolicyName,
                 context => CreatePartition(ResolveSubjectKey(context), CatalogPermitLimit));
         });
 
-    private static RateLimitPartition<string> CreatePartition(string partitionKey, int permitLimit) =>
+    private static RateLimitPartition<string> CreatePartition(
+        string partitionKey,
+        int permitLimit,
+        TimeSpan? window = null) =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey,
-            _ => new FixedWindowRateLimiterOptions { PermitLimit = permitLimit, Window = Window });
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = permitLimit,
+                Window = window ?? Window
+            });
 
     private static string ResolveSubjectKey(HttpContext context)
     {

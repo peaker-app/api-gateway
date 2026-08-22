@@ -89,14 +89,6 @@ public sealed class CorsTests : IDisposable
         return await client.SendAsync(request);
     }
 
-    private sealed class ConfiguredGateway : WebApplicationFactory<Program>
-    {
-        protected override void ConfigureWebHost(IWebHostBuilder builder) =>
-            builder.ConfigureAppConfiguration(configuration =>
-                configuration.AddInMemoryCollection(
-                    new Dictionary<string, string?>
-                    {
-                        ["Cors:AllowedOrigins:0"] = AllowedOrigin,
-                    }));
-    }
+    private sealed class ConfiguredGateway()
+        : IsolatedGateway(new KeyValuePair<string, string?>("Cors:AllowedOrigins:0", AllowedOrigin));
 }

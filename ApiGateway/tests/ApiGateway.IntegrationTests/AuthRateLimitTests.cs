@@ -10,7 +10,7 @@ public sealed class AuthRateLimitTests : IDisposable
 {
     private const int AuthPermitLimit = 5;
 
-    private readonly WebApplicationFactory<Program> _factory = new();
+    private readonly IsolatedGateway _factory = new();
 
     [Fact]
     public async Task Login_BeyondFivePerMinute_IsRejectedWithTooManyRequests()

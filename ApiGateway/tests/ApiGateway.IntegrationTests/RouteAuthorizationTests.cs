@@ -16,7 +16,7 @@ public sealed class RouteAuthorizationTests : IDisposable
 {
     private const string SampleId = "11111111-1111-1111-1111-111111111111";
 
-    private readonly WebApplicationFactory<Program> _factory = new();
+    private readonly IsolatedGateway _factory = new();
     private readonly TestTokenSigning _tokenSigning = new();
     private readonly WebApplicationFactory<Program> _signedFactory;
 
